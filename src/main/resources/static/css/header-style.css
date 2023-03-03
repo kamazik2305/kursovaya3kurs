@@ -1,0 +1,63 @@
+body
+{
+    background-color: #484848;
+    color: black;
+    border: 2px solid black;
+}
+
+.input-wrapper
+{
+    flex-wrap: nowrap;
+    width: 600px;
+}
+
+.input
+{
+    background: #dddcdc;
+    border: 2px solid black;
+    width: 400px;
+    height: 45px;
+}
+
+.btn-grey
+{
+    background: #adadad;
+    width: 100px;
+    height: 45px;
+    border: 2px solid black;
+    text-align: center;
+    --bs-text-opacity: 1;
+    color: black(var(--bs-dark-rgb),var(--bs-text-opacity))!important;
+    border-radius: 12px;
+    font-weight: 650;
+}
+
+ .navbar
+{
+    gap: 15px;
+}
+
+.site-head
+{
+    border: 2px solid black;
+    background: #262626;
+}
+
+.search
+{
+    border: 2px solid black;
+    border-radius: 12px;
+    background: #adadad;
+    font-weight: 650;
+}
+
+.ai
+{
+    color: black;
+    font-style: italic;
+}
+
+.h1
+{
+    padding-left: 120px;
+}

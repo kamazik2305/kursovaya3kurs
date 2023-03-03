@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd">
+
+    <changeSet id="test_section-test-test_result-create" author="kamaz" runOnChange="true">
+        <preConditions onFail="MARK_RAN">
+            <and>
+                <not>
+                    <tableExists tableName="test_section"/>
+                </not>
+            </and>
+            <and>
+                <not>
+                    <tableExists tableName="test"/>
+                </not>
+            </and>
+            <and>
+                <not>
+                    <tableExists tableName="test_result"/>
+                </not>
+            </and>
+        </preConditions>
+
+        <createTable tableName="test_section">
+            <column name="id_test_section" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="test_section_title" type="nvarchar2(50)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="test">
+            <column name="id_test" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="test_name" type="nvarchar2(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="id_test_section" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="test_result">
+            <column name="id_result" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="count_points" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="id_test" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="id_user" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="test"
+                                 baseColumnNames="id_test_section"
+                                 constraintName="fk_store_id_test_section"
+                                 referencedTableName="test_section"
+                                 referencedColumnNames="id_test_section"/>
+
+        <addForeignKeyConstraint baseTableName="test_result"
+                                 baseColumnNames="id_test"
+                                 constraintName="fk_store_test_result_id_test"
+                                 referencedTableName="test"
+                                 referencedColumnNames="id_test"/>
+
+
+
+
+    </changeSet>
+
+    <changeSet id="test_section-test-test_result-rollback" author="kamaz">
+        <rollback>
+            <dropTable tableName="test_section"/>
+            <dropTable tableName="test"/>
+            <dropTable tableName="test_result"/>
+            <dropForeignKeyConstraint baseTableName="test" constraintName="fk_store_id_test_section"/>
+            <dropForeignKeyConstraint baseTableName="test_result" constraintName="fk_store_test_result_id_test"/>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>

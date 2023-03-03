@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd">
+
+    <changeSet id="question_type-question-answer_version-true_answer-create" author="kamaz" runOnChange="true">
+        <preConditions onFail="MARK_RAN">
+            <and>
+                <not>
+                    <tableExists tableName="question_type"/>
+                </not>
+            </and>
+            <and>
+                <not>
+                    <tableExists tableName="question"/>
+                </not>
+            </and>
+            <and>
+                <not>
+                    <tableExists tableName="answer_version"/>
+                </not>
+            </and>
+            <and>
+                <not>
+                    <tableExists tableName="true_answer"/>
+                </not>
+            </and>
+        </preConditions>
+
+        <createTable tableName="question_type">
+            <column name="id_question_type" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="type_description" type="nvarchar2(50)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="question">
+            <column name="id_question" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="question_text" type="nvarchar2(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="id_type_question" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="id_test" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="answer_version">
+            <column name="id_answer_version" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="text_answer" type="nvarchar2(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="id_question" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="true_answer">
+            <column name="id_true_answer" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="id_question" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="id_answer_version" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="question"
+                                 baseColumnNames="id_type_question"
+                                 constraintName="fk_store_id_type_question"
+                                 referencedTableName="question_type"
+                                 referencedColumnNames="id_question_type"/>
+
+        <addForeignKeyConstraint baseTableName="question"
+                                 baseColumnNames="id_test"
+                                 constraintName="fk_store_question_id_test"
+                                 referencedTableName="test"
+                                 referencedColumnNames="id_test"/>
+
+        <addForeignKeyConstraint baseTableName="answer_version"
+                                 baseColumnNames="id_question"
+                                 constraintName="fk_store_answer_version_id_question"
+                                 referencedTableName="question"
+                                 referencedColumnNames="id_question"/>
+
+        <addForeignKeyConstraint baseTableName="true_answer"
+                                 baseColumnNames="id_question"
+                                 constraintName="fk_store_true_answer_id_question"
+                                 referencedTableName="question"
+                                 referencedColumnNames="id_question"/>
+
+        <addForeignKeyConstraint baseTableName="true_answer"
+                                 baseColumnNames="id_answer_version"
+                                 constraintName="fk_store_id_answer_version"
+                                 referencedTableName="answer_version"
+                                 referencedColumnNames="id_answer_version"/>
+
+    </changeSet>
+
+    <changeSet id="question_type-question-answer_version-true_answer-rollback" author="kamaz">
+        <rollback>
+            <dropTable tableName="question_type"/>
+            <dropTable tableName="question"/>
+            <dropTable tableName="answer_version"/>
+            <dropTable tableName="true_answer"/>
+            <dropForeignKeyConstraint baseTableName="question" constraintName="fk_store_id_type_question"/>
+            <dropForeignKeyConstraint baseTableName="question" constraintName="fk_store_question_id_test"/>
+            <dropForeignKeyConstraint baseTableName="answer_version" constraintName="fk_store_answer_version_id_question"/>
+            <dropForeignKeyConstraint baseTableName="true_answer" constraintName="fk_store_true_answer_id_question"/>
+            <dropForeignKeyConstraint baseTableName="true_answer" constraintName="fk_store_id_answer_version"/>
+
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>

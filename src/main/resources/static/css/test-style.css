@@ -1,0 +1,42 @@
+.test-container
+{
+    padding-left: 100px;
+    width: 800px;
+    margin-right: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    margin-left: 0;
+}
+
+.test
+{
+    background: #dddcdc;
+    display: flex;
+    flex-direction: column;
+    align-items: baseline;
+    justify-content: center;
+    padding: 50px;
+    border: 2px solid black;
+    border-radius: 12px;
+    height: 150px;
+}
+
+.test-text
+{
+    font-size: 25px;
+    font-weight: 600;
+}
+
+.test-btn
+{
+    background: #adadad;
+    width: 175px;
+    height: 45px;
+    border: 2px solid black;
+    text-align: center;
+    --bs-text-opacity: 1;
+    color: black(var(--bs-dark-rgb),var(--bs-text-opacity))!important;
+    border-radius: 12px;
+    font-weight: 650;
+}

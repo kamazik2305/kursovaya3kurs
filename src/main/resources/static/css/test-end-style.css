@@ -1,0 +1,44 @@
+.test-end-container
+{
+    padding-left: 100px;
+    width: 800px;
+    margin-right: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    margin-left: 0;
+}
+
+.test-end
+{
+    background: #dddcdc;
+    display: flex;
+    flex-direction: column;
+    align-items: baseline;
+    justify-content: right;
+    padding: 50px;
+    border: 2px solid black;
+    border-radius: 12px;
+    height: 400px;
+    width: 800px;
+}
+
+.end-text
+{
+    font-size: 25px;
+    font-weight: 600;
+}
+
+.btn-main
+{
+    background: #adadad;
+    width: 100px;
+    height: 45px;
+    border: 2px solid black;
+    text-align: center;
+    --bs-text-opacity: 1;
+    color: black(var(--bs-dark-rgb),var(--bs-text-opacity))!important;
+    border-radius: 12px;
+    font-weight: 650;
+    align-items: center;
+}

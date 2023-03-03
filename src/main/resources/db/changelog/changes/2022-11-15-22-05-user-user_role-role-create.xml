@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd">
+
+    <changeSet id="user-user_role-role-create" author="kamaz" runOnChange="true">
+        <preConditions onFail="MARK_RAN">
+            <and>
+                <not>
+                    <tableExists tableName="users"/>
+                </not>
+            </and>
+            <and>
+                <not>
+                    <tableExists tableName="users_roles"/>
+                </not>
+            </and>
+            <and>
+                <not>
+                    <tableExists tableName="roles"/>
+                </not>
+            </and>
+        </preConditions>
+
+        <createTable tableName="users">
+            <column name="id_user" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="user_name" type="nvarchar2(50)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="password" type="nvarchar2(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="confirm_password" type="nvarchar2(50)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="users_roles">
+            <column name="roles_id_role" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="users_id_user" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="roles">
+            <column name="id_role" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="role_name" type="nvarchar2(50)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="users_roles"
+                                 baseColumnNames="users_id_user"
+                                 constraintName="fk_store_user_role_id_user"
+                                 referencedTableName="users"
+                                 referencedColumnNames="id_user"/>
+
+        <addForeignKeyConstraint baseTableName="users_roles"
+                                 baseColumnNames="roles_id_role"
+                                 constraintName="fk_store_id_store"
+                                 referencedTableName="roles"
+                                 referencedColumnNames="id_role"/>
+
+        <addForeignKeyConstraint baseTableName="test_result"
+                                 baseColumnNames="id_user"
+                                 constraintName="fk_store_test_result_id_user"
+                                 referencedTableName="users"
+                                 referencedColumnNames="id_user"/>
+
+    </changeSet>
+
+    <changeSet id="user-user_role-role-rollback" author="kamaz">
+        <rollback>
+            <dropTable tableName="user"/>
+            <dropTable tableName="role"/>
+            <dropTable tableName="users_roles"/>
+            <dropForeignKeyConstraint baseTableName="users_roles" constraintName="fk_store_user_role_id_user"/>
+            <dropForeignKeyConstraint baseTableName="users_roles" constraintName="fk_store_id_store"/>
+            <dropForeignKeyConstraint baseTableName="test_result" constraintName="fk_store_test_result_id_user"/>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>

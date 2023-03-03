@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/header-style.css">
+
+    <script type="text/javascript" src="/js/question_add.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/samgozman/YoptaScript/dist/yopta.js"></script>
+
+</head>
+
+<body>
+<header th:insert="htmlblocks/header :: header"></header>
+
+<div class="container mt-5 mb-5">
+
+    <h1>Добавить вопрос в тест</h1>
+    <div th:each="t : ${test}">
+        <p th:text="${t.testName}"></p>
+    </div>
+    <form method="post" id="form-add" onsubmit="submitForm(event)">
+        <input id="txt" type="text" name="questionText" placeholder="Введите тест вопроса" class="form-control" autocomplete="off">
+        <select id="selectType" name="selectType" onchange="alertValue(value)">
+            <option value="0">Выберете тип вопроса</option>
+            <option th:each="qt : ${questionTypes}"
+                    th:text="${qt.typeDescription}"
+                    th:value="${qt.id}"
+                    th:id="${qt.id}">
+        </select>
+    </form>
+</div>
+<div class="container mt-5 mb-5">
+
+</div>
+
+<div th:insert="htmlblocks/footer :: footer"></div>
+</body>
+</html>

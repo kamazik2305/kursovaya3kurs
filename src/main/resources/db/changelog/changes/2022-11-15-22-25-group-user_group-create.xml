@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd">
+
+    <changeSet id="group-user_group-create" author="kamaz" runOnChange="true">
+        <preConditions onFail="MARK_RAN">
+            <and>
+                <not>
+                    <tableExists tableName="child_groups"/>
+                </not>
+            </and>
+            <and>
+                <not>
+                    <tableExists tableName="users_child_groups"/>
+                </not>
+            </and>
+        </preConditions>
+
+        <createTable tableName="child_groups">
+            <column name="id_group" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="group_name" type="nvarchar2(50)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="id_teacher" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="users_child_groups">
+            <column name="child_groups_id_group" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="children_id_user" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="child_groups"
+                                 baseColumnNames="id_teacher"
+                                 constraintName="fk_store_id_teacher"
+                                 referencedTableName="users"
+                                 referencedColumnNames="id_user"/>
+
+        <addForeignKeyConstraint baseTableName="users_child_groups"
+                                 baseColumnNames="child_groups_id_group"
+                                 constraintName="fk_store_id_group"
+                                 referencedTableName="child_groups"
+                                 referencedColumnNames="id_group"/>
+
+        <addForeignKeyConstraint baseTableName="users_child_groups"
+                                 baseColumnNames="children_id_user"
+                                 constraintName="fk_store_user_group_id_user"
+                                 referencedTableName="users"
+                                 referencedColumnNames="id_user"/>
+
+    </changeSet>
+
+    <changeSet id="group-user_group-rollback" author="kamaz">
+        <rollback>
+            <dropTable tableName="users_child_groups"/>
+            <dropTable tableName="child_groups"/>
+            <dropForeignKeyConstraint baseTableName="child_groups" constraintName="fk_store_id_teacher"/>
+            <dropForeignKeyConstraint baseTableName="users_child_groups" constraintName="fk_store_id_group"/>
+            <dropForeignKeyConstraint baseTableName="users_child_groups" constraintName="fk_store_user_group_id_user"/>
+        </rollback>
+    </changeSet>
+</databaseChangeLog>

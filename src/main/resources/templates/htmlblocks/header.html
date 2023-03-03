@@ -1,0 +1,21 @@
+<div th:fragment="header">
+    <div class="d-flex flex-column flex-md-row align-items-center pb-3 mb-4 border-bottom site-head">
+      <a href="/" class="d-flex align-items-center text-dark text-decoration-none">
+            <span class="fs-4 btn-grey">IQ test</span>
+      </a>
+        <nav class="d-inline-flex mt-0 mt-md-0 ms-md-auto navbar">
+            <form action="/" method="post" class="col align-self-center input-wrapper" onsubmit="submitSearchForm(event)">
+                <div class="input-group mb-0 input-wrapper" style="flex-wrap:none">
+                    <input id="searchString" type="text" name="searchString" placeholder="Введите название теста или раздела" class="form-control input ai">
+                    <button type="submit" class="search">Начать поиск</button>
+                </div>
+            </form>
+            <a class="me-3 py-2 btn-grey text-decoration-none col align-self-center" href="/">Главная</a>
+            <a class="me-3 py-2 btn-grey text-decoration-none col align-self-center" href="/test-sections">Тесты</a>
+            <a class="me-3 py-2 btn-grey text-decoration-none col align-self-center" href="/about">О проекте</a>
+            <a sec:authorize="isAnonymous()" class="me-3 py-2 btn-grey text-decoration-none col align-self-center" href="/registration">Регистрация</a>
+            <a sec:authorize="hasRole('ROLE_ADMIN')" class="me-3 py-2 btn-grey text-decoration-none col align-self-center" href="/admin">Админ</a>
+            <a sec:authorize="hasRole('ROLE_USER')" class="me-3 py-2 btn-grey text-decoration-none col align-self-center" href="/user">Профиль</a>
+        </nav>
+    </div>
+</div>
